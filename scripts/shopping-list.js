@@ -74,7 +74,7 @@ const shoppingList = (function(){
       event.preventDefault();
       const newItemName = $('.js-shopping-list-entry').val();
       $('.js-shopping-list-entry').val('');
-      addItem(newItemName);
+      store.addItem(newItemName);
       render();
     });
   }
@@ -94,15 +94,15 @@ const shoppingList = (function(){
   function handleItemCheckClicked() {
     $('.js-shopping-list').on('click', '.js-item-toggle', event => {
       const id = getItemIdFromElement(event.currentTarget);
-      findAndToggleChecked(id);
+      store.findAndToggleChecked(id);
       render();
     });
   }
   
-  function deleteListItem(id) {
-    const index = store.items.findIndex(item => item.id === id);
-    store.items.splice(index, 1);
-  }
+  // function deleteListItem(id) {
+  //   const index = store.items.findIndex(item => item.id === id);
+  //   store.items.splice(index, 1);
+  // }
   
   // function editListItemName(id, itemName) {
   //   const item = store.items.find(item => item.id === id);
@@ -122,9 +122,11 @@ const shoppingList = (function(){
     // like in `handleItemCheckClicked`, we use event delegation
     $('.js-shopping-list').on('click', '.js-item-delete', event => {
       // get the index of the item in store.items
-      const id = getItemIdFromElement(event.currentTarget);
+      console.log(event.currentTarget);
+      const id = $(event.currentTarget).closest('.js-item-element').attr('data-item-id');
+      console.log(id);
       // delete the item
-      deleteListItem(id);
+      store.findAndDelete(id);
       // render the updated shopping list
       render();
     });
@@ -135,7 +137,7 @@ const shoppingList = (function(){
       event.preventDefault();
       const id = getItemIdFromElement(event.currentTarget);
       const itemName = $(event.currentTarget).find('.shopping-item').val();
-      findAndUpdateName(id, itemName);
+      store.findAndUpdateName(id, itemName);
       render();
     });
   }
@@ -167,6 +169,6 @@ const shoppingList = (function(){
   // This object contains the only exposed methods from this module:
   return {
     render: render,
-    bindEventListeners: bindEventListeners,
+    bindEventListeners: bindEventListeners, store
   };
 }());
