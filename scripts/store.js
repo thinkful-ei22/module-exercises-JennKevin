@@ -13,7 +13,7 @@ const store = (function(){
   ];
 
   const findById = function (id){
-    return this.items.find(item => item.id === id);
+    return store.items.find(item => item.id === id);
   };
   
   const addItem = function (name){
@@ -46,11 +46,18 @@ const store = (function(){
     this.items.splice(indexOfId, 1);
   };
 
+  const toggleCheckedFilter = function(){
+    store.hideCheckedItems = !store.hideCheckedItems;
+  };
+
+  const setSearchTerm = function(val){
+    store.searchTerm = val;
+  };
   return {
     hideCheckedItems, searchTerm, 
     items, findById, addItem, 
     findAndToggleChecked, findAndUpdateName,
-    findAndDelete,
+    findAndDelete, toggleCheckedFilter, setSearchTerm
   };
 
 }());

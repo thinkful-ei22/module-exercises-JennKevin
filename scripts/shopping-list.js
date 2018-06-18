@@ -1,6 +1,6 @@
 'use strict';
 /*eslint-env jquery*/
-/* global store, Item */
+/* global store, cuid */
 
 // eslint-disable-next-line no-unused-vars
 const shoppingList = (function(){
@@ -57,24 +57,16 @@ const shoppingList = (function(){
   }
   
   
-  // function addItemToShoppingList(itemName) {
-  //   //store.items.push({ id: cuid(), name: itemName, checked: false });
-  //   try {
-  //     Item.validateName(itemName);
-  //     store.items.push(Item.create(itemName));
-  //   } catch(error) {
-  //     console.log('Cannot add item: ' + error.message);
-  //   }
-  //   render();
-  //   console.log(store);
-  // }
+  function addItemToShoppingList(itemName) {
+    store.items.push({ id: cuid(), name: itemName, checked: false });
+  }
   
   function handleNewItemSubmit() {
     $('#js-shopping-list-form').submit(function (event) {
       event.preventDefault();
       const newItemName = $('.js-shopping-list-entry').val();
       $('.js-shopping-list-entry').val('');
-      store.addItem(newItemName);
+      addItemToShoppingList(newItemName);
       render();
     });
   }
@@ -109,22 +101,20 @@ const shoppingList = (function(){
   //   item.name = itemName;
   // }
   
-  function toggleCheckedItemsFilter() {
-    store.hideCheckedItems = !store.hideCheckedItems;
-  }
+  // function toggleCheckedItemsFilter() {
+  //   store.hideCheckedItems = !store.hideCheckedItems;
+  // }
   
-  function setSearchTerm(val) {
-    store.searchTerm = val;
-  }
+  // function setSearchTerm(val) {
+  //   store.searchTerm = val;
+  // }
   
   
   function handleDeleteItemClicked() {
     // like in `handleItemCheckClicked`, we use event delegation
     $('.js-shopping-list').on('click', '.js-item-delete', event => {
       // get the index of the item in store.items
-      console.log(event.currentTarget);
-      const id = $(event.currentTarget).closest('.js-item-element').attr('data-item-id');
-      console.log(id);
+      const id = getItemIdFromElement(event.currentTarget);
       // delete the item
       store.findAndDelete(id);
       // render the updated shopping list
@@ -137,6 +127,7 @@ const shoppingList = (function(){
       event.preventDefault();
       const id = getItemIdFromElement(event.currentTarget);
       const itemName = $(event.currentTarget).find('.shopping-item').val();
+      console.log(itemName);
       store.findAndUpdateName(id, itemName);
       render();
     });
@@ -144,7 +135,7 @@ const shoppingList = (function(){
   
   function handleToggleFilterClick() {
     $('.js-filter-checked').click(() => {
-      toggleCheckedItemsFilter();
+      store.toggleCheckedFilter();
       render();
     });
   }
@@ -152,7 +143,7 @@ const shoppingList = (function(){
   function handleShoppingListSearch() {
     $('.js-shopping-list-search-entry').on('keyup', event => {
       const val = $(event.currentTarget).val();
-      setSearchTerm(val);
+      store.setSearchTerm(val);
       render();
     });
   }
@@ -169,6 +160,6 @@ const shoppingList = (function(){
   // This object contains the only exposed methods from this module:
   return {
     render: render,
-    bindEventListeners: bindEventListeners, store
+    bindEventListeners: bindEventListeners,
   };
 }());
