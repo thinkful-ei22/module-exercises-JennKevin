@@ -9,11 +9,11 @@ $(document).ready(function() {
     try {
       Item.validateName(name);
       store.items.push(Item.create(name));
+      console.log(store);
     } catch(error) {
       console.log('Cannot add item: ' + error.message);
     }
   });
   shoppingList.render();
   shoppingList.bindEventListeners();
-  shoppingList.render();
 });
