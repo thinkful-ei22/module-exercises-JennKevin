@@ -127,7 +127,6 @@ const shoppingList = (function(){
       event.preventDefault();
       const id = getItemIdFromElement(event.currentTarget);
       const itemName = $(event.currentTarget).find('.shopping-item').val();
-      console.log(itemName);
       store.findAndUpdateName(id, itemName);
       render();
     });
