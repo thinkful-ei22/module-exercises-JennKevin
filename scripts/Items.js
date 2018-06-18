@@ -1,7 +1,6 @@
 'use strict';
 /*eslint-env jquery*/
 
-
 const validateName = (function(name){
   if (!name){
     throw new Error('Name does not exist');
@@ -17,8 +16,8 @@ const create = (function(name){
 }());
 
 const Item = (function(){
-    return {
-      validateName,
-      create
-    };
-  }());
+  return {
+    validateName,
+    create
+  };
+}());
